@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">灵动岛 ColorOS</string>
+    <string name="permission_notification">通知权限</string>
+    <string name="permission_overlay">悬浮窗权限</string>
+    <string name="permission_notification_listener">通知使用权</string>
+    <string name="permission_battery">电池优化白名单</string>
+    <string name="start_island">启动灵动岛</string>
+    <string name="stop_island">停止灵动岛</string>
+</resources>
