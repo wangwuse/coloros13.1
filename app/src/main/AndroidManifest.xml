@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- ========== 核心权限 ========== -->
+    <!-- 悬浮窗权限：全局显示灵动岛 -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <!-- 前台服务 -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <!-- Android 14+ 前台服务类型声明 -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <!-- 通知监听（读取系统通知转化为灵动岛内容） -->
+    <uses-permission android:name="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" />
+    <!-- 电池优化白名单 -->
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <!-- 开机自启 -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- 唤醒锁（保活） -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- 振动反馈 -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- 读取媒体通知 -->
+    <uses-permission android:name="android.permission.MEDIA_CONTENT_CONTROL" />
+
+    <application
+        android:name=".DynamicIslandApp"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="灵动岛 ColorOS"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.DynamicIsland">
+
+        <!-- ========== 主界面：权限引导 + 测试面板 ========== -->
+        <activity
+            android:name=".ui.MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- ========== 电池白名单引导页 ========== -->
+        <activity
+            android:name=".ui.BatteryWhitelistActivity"
+            android:label="权限设置" />
+
+        <!-- ========== 核心：前台服务 + 悬浮窗 ========== -->
+        <service
+            android:name=".service.DynamicIslandService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse"
+            tools:targetApi="34">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="dynamic_island" />
+        </service>
+
+        <!-- ========== 通知监听服务 ========== -->
+        <service
+            android:name=".service.NotificationCollectorService"
+            android:exported="false"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
+
+        <!-- ========== 音乐控制服务 ========== -->
+        <service
+            android:name=".service.MusicControllerService"
+            android:exported="false"
+            android:foregroundServiceType="mediaPlayback" />
+
+        <!-- ========== 开机自启 + 解锁拉起 ========== -->
+        <receiver
+            android:name=".receiver.BootAndUnlockReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
+
+        <!-- ========== 充电状态监听 ========== -->
+        <receiver
+            android:name=".receiver.BatteryStateReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BATTERY_CHANGED" />
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- ========== JobScheduler 复活广播 ========== -->
+        <receiver
+            android:name=".receiver.JobResurrectReceiver"
+            android:exported="false" />
+
+    </application>
+</manifest>

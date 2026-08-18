@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">灵动岛 ColorOS</string>
+    <string name="permission_overlay">悬浮窗权限</string>
+    <string name="permission_battery">电池优化白名单</string>
+    <string name="permission_autostart">自启动管理</string>
+    <string name="permission_notification">通知使用权</string>
+    <string name="btn_start">启动灵动岛</string>
+    <string name="btn_stop">停止服务</string>
+    <string name="btn_music">🎵 音乐</string>
+    <string name="btn_notification">📦 外卖</string>
+    <string name="btn_charging">⚡ 充电</string>
+    <string name="btn_timer">⏱ 计时</string>
+    <string name="btn_clear">清除</string>
+</resources>
